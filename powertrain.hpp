@@ -24,10 +24,13 @@ private:
   unsigned int dirPinA;
   unsigned int dirPinB;
   ServiceClient *serviceClient;
-  unsigned int motorPower;
+  int motorPower;
+  unsigned int motorPowerRaw;
   DrivingDirection direction;
   const static unsigned int MOTOR_POWER_MIN = 0;
   const static unsigned int MOTOR_POWER_MAX = 255;
+  const static unsigned int MOTOR_POWER_RAW_MIN = 0;
+  const static unsigned int MOTOR_POWER_RAW_MAX = 255;
 
 public:
   Powertrain(

@@ -19,6 +19,7 @@ Powertrain::Powertrain(
     this->dirPinB = __dirPinB;
     this->serviceClient = __serviceClient;
     this->motorPower = Powertrain::MOTOR_POWER_MIN;
+    this->motorPowerRaw = Powertrain::MOTOR_POWER_RAW_MIN;
     this->direction = DrivingDirection::FORWARD;
 }
 
@@ -33,33 +34,42 @@ void Powertrain::setup(void)
     digitalWrite(this->dirPinA, HIGH);
     digitalWrite(this->dirPinB, LOW);
 
-    analogWrite(this->pwmPin, this->motorPower);
+    analogWrite(this->pwmPin, this->motorPowerRaw);
 }
 
 void Powertrain::loop(void)
 {
-    if (serviceClient->getPowertrainLevel() > 0)
+    this->motorPower = serviceClient->getPowertrainLevel();
+
+    this->motorPowerRaw = abs(this->motorPower);
+
+    if (this->motorPower < 0)
+    {
+        this->direction = DrivingDirection::REVERSE;
+    }
+    else
     {
         this->direction = DrivingDirection::FORWARD;
-        this->motorPower = Powertrain::MOTOR_POWER_MAX;
+    }
 
+    Serial.println();
+    Serial.print("Motor power: ");
+    Serial.println(this->motorPower);
+    Serial.print("Direction: ");
+    Serial.println((int) this->direction);
+
+    if (DrivingDirection::FORWARD == this->direction)
+    {
         digitalWrite(this->dirPinA, HIGH);
         digitalWrite(this->dirPinB, LOW);
         digitalWrite(LED_BUILTIN, LOW);
     }
-    else if (serviceClient->getPowertrainLevel() < 0)
+    else
     {
-        this->direction = DrivingDirection::REVERSE;
-        this->motorPower = Powertrain::MOTOR_POWER_MAX;
-
         digitalWrite(this->dirPinA, LOW);
         digitalWrite(this->dirPinB, HIGH);
         digitalWrite(LED_BUILTIN, HIGH);
     }
-    else
-    {
-        this->motorPower = Powertrain::MOTOR_POWER_MIN;
-    }
 
-    analogWrite(this->pwmPin, this->motorPower);
+    analogWrite(this->pwmPin, this->motorPowerRaw);
 }
