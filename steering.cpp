@@ -18,6 +18,7 @@ Steering::Steering(
     this->dirPinA = __dirPinA;
     this->dirPinB = __dirPinB;
     this->serviceClient = __serviceClient;
+    this->angle = Steering::ANGLE_CENTER;
     this->angleRaw = Steering::ANGLE_RAW_MIN;
 }
 
@@ -35,35 +36,25 @@ void Steering::setup(void)
 
 void Steering::loop(void)
 {
-    if (this->serviceClient->getSteeringAngle() > 0)
-    {
-        this->setAngle(Steering::ANGLE_RIGHT_MAX);
-    }
-    else if (this->serviceClient->getSteeringAngle() < 0)
-    {
-        this->setAngle(Steering::ANGLE_LEFT_MECH_MAX);
-    }
-    else
-    {
-        this->setAngle(Steering::ANGLE_CENTER);
-    }
+    this->angle = this->serviceClient->getSteeringAngle();
 
-    analogWrite(this->pwmPin, this->angleRaw);
-}
-
-void Steering::setAngle(int angle)
-{
     Serial.println();
-    Serial.print("Setting steering angle to ");
-    Serial.print(angle);
+    Serial.print("Steering angle: ");
+    Serial.print(this->angle);
     Serial.print(" deg");
 
-    if (angle < Steering::ANGLE_LEFT_MAX || angle > Steering::ANGLE_RIGHT_MAX)
+    if (this->angle < Steering::ANGLE_LEFT_MAX || this->angle > Steering::ANGLE_RIGHT_MAX)
     {
         return;
     }
 
-    if (angle > Steering::ANGLE_CENTER)
+    this->angleRaw = (int)(abs(this->angle) / (float)Steering::ANGLE_RIGHT_MAX * Steering::ANGLE_RAW_MAX);
+    
+    Serial.print(" (");
+    Serial.print(this->angleRaw);
+    Serial.println(")");
+
+    if (this->angle > Steering::ANGLE_CENTER)
     {
         // Right
         digitalWrite(this->dirPinA, HIGH);
@@ -76,9 +67,5 @@ void Steering::setAngle(int angle)
         digitalWrite(this->dirPinB, HIGH);
     }
 
-    this->angleRaw = (int)(abs(angle) / (float)Steering::ANGLE_RIGHT_MAX * Steering::ANGLE_RAW_MAX);
-
-    Serial.print(" (");
-    Serial.print(this->angleRaw);
-    Serial.println(")");
+    analogWrite(this->pwmPin, this->angleRaw);
 }

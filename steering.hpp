@@ -18,6 +18,7 @@ private:
   unsigned int dirPinA;
   unsigned int dirPinB;
   ServiceClient *serviceClient;
+  int angle;
   unsigned int angleRaw;
 
   const static int ANGLE_LEFT_MAX = -90;
