@@ -105,15 +105,25 @@ void ServiceClient::loop(void)
       }
       else
       {
-        // Read body
-        this->steeringAngle = (int8_t)client.read();
-        this->powertrainLevel = (int8_t)client.read();
+        if (client.available() == ServiceClient::BODY_SIZE)
+        {
+          // Read body
 
-        Serial.println();
-        Serial.print("Steering: ");
-        Serial.println(this->steeringAngle);
-        Serial.print("Powertrain: ");
-        Serial.println(this->powertrainLevel);
+          client.readBytes(responseBody, ServiceClient::BODY_SIZE);
+
+          memcpy(&this->steeringAngle, this->responseBody, sizeof(float));
+          memcpy(&this->powertrainLevel, this->responseBody + sizeof(float), sizeof(float));
+
+          Serial.println();
+          Serial.print("Steering: ");
+          Serial.println(this->steeringAngle);
+          Serial.print("Powertrain: ");
+          Serial.println(this->powertrainLevel);
+        }
+        else
+        {
+          Serial.println(client.available());
+        }
       }
     }
   }
@@ -124,6 +134,8 @@ void ServiceClient::loop(void)
     // Stop client
     client.stop();
   }
+
+  delay(10);
 }
 
 void ServiceClient::printWiFiStatus(void)
@@ -144,12 +156,12 @@ void ServiceClient::printWiFiStatus(void)
   Serial.println(" dBm");
 }
 
-int ServiceClient::getPowertrainLevel(void) const
+float ServiceClient::getPowertrainLevel(void) const
 {
   return this->powertrainLevel;
 }
 
-int ServiceClient::getSteeringAngle(void) const
+float ServiceClient::getSteeringAngle(void) const
 {
   return this->steeringAngle;
 }

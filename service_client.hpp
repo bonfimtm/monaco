@@ -18,22 +18,21 @@
 class ServiceClient
 {
 private:
-  int powertrainLevel;
-  int steeringAngle;
+  float powertrainLevel;
+  float steeringAngle;
+  
   const char *ssid;
   const char *pass;
   const char *server;
   const char *endpoint;
   unsigned int port;
 
-  // Wi-Fi client
-  WiFiClient client;
+  WiFiClient client;           // Wi-Fi client
+  int status = WL_IDLE_STATUS; // Wi-Fi connectoin status
 
-  // Wi-Fi connectoin status
-  int status = WL_IDLE_STATUS;
-
-  // Number of lines in HTTP header
-  const static unsigned int HEADER_LINES = 8;
+  const static unsigned int BODY_SIZE = 8;    // HTTP response body size in bytes
+  const static unsigned int HEADER_LINES = 8; // Number of lines in HTTP header
+  byte responseBody[ServiceClient::BODY_SIZE];
 
 public:
   ServiceClient(
@@ -45,8 +44,8 @@ public:
   void setup(void);
   void loop(void);
   void printWiFiStatus(void);
-  int getPowertrainLevel(void) const;
-  int getSteeringAngle(void) const;
+  float getPowertrainLevel(void) const;
+  float getSteeringAngle(void) const;
 };
 
 #endif /* service_client_hpp */

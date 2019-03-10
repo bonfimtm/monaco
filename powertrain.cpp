@@ -41,9 +41,23 @@ void Powertrain::loop(void)
 {
     this->motorPower = serviceClient->getPowertrainLevel();
 
-    this->motorPowerRaw = abs(this->motorPower);
+    Serial.println();
+    Serial.print("Motor power: ");
+    Serial.print(this->motorPower);
+    Serial.print("\%");
 
-    if (this->motorPower < 0)
+    if (this->motorPower < -Powertrain::MOTOR_POWER_MAX || this->motorPower > Powertrain::MOTOR_POWER_MAX)
+    {
+        return;
+    }
+
+    this->motorPowerRaw = (int)(abs(this->motorPower) / (float)Powertrain::MOTOR_POWER_MAX * Powertrain::MOTOR_POWER_RAW_MAX);
+    
+    Serial.print(" (");
+    Serial.print(this->motorPowerRaw);
+    Serial.println(")");
+
+    if (this->motorPower < 0.0f)
     {
         this->direction = DrivingDirection::REVERSE;
     }
@@ -51,10 +65,7 @@ void Powertrain::loop(void)
     {
         this->direction = DrivingDirection::FORWARD;
     }
-
-    Serial.println();
-    Serial.print("Motor power: ");
-    Serial.println(this->motorPower);
+    
     Serial.print("Direction: ");
     Serial.println((int) this->direction);
 

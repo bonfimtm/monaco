@@ -41,14 +41,14 @@ void setup()
 {
   Serial.begin(SERIAL_BAUD_RATE);
   serviceClient.setup();
-  powertrain.setup();
   steering.setup();
+  powertrain.setup();
 }
 
 // The loop function runs over and over again forever
 void loop()
 {
   serviceClient.loop();
-  powertrain.loop();
   steering.loop();
+  powertrain.loop();
 }

@@ -24,11 +24,11 @@ private:
   unsigned int dirPinA;
   unsigned int dirPinB;
   ServiceClient *serviceClient;
-  int motorPower;
+  float motorPower;
   unsigned int motorPowerRaw;
   DrivingDirection direction;
-  const static unsigned int MOTOR_POWER_MIN = 0;
-  const static unsigned int MOTOR_POWER_MAX = 255;
+  constexpr static float MOTOR_POWER_MIN = 0.0f;
+  constexpr static float MOTOR_POWER_MAX = 100.0f;
   const static unsigned int MOTOR_POWER_RAW_MIN = 0;
   const static unsigned int MOTOR_POWER_RAW_MAX = 255;
 

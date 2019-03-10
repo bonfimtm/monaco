@@ -18,15 +18,15 @@ private:
   unsigned int dirPinA;
   unsigned int dirPinB;
   ServiceClient *serviceClient;
-  int angle;
+  float angle;
   unsigned int angleRaw;
 
-  const static int ANGLE_LEFT_MAX = -90;
-  const static int ANGLE_CENTER = 0;
-  const static int ANGLE_RIGHT_MAX = 90;
+  constexpr static float ANGLE_LEFT_MAX = -90.0f;
+  constexpr static float ANGLE_CENTER = 0.0f;
+  constexpr static float ANGLE_RIGHT_MAX = 90.0f;
 
-  const static int ANGLE_LEFT_MECH_MAX = -60;
-  const static int ANGLE_RIGHT_MECH_MAX = 60;
+  constexpr static float ANGLE_LEFT_MECH_MAX = -60.0f;
+  constexpr static float ANGLE_RIGHT_MECH_MAX = 60.0f;
 
   const static unsigned int ANGLE_RAW_MIN = 0;
   const static unsigned int ANGLE_RAW_MAX = 255;
@@ -39,7 +39,6 @@ public:
       ServiceClient *__serviceClient);
   void setup(void);
   void loop(void);
-  void setAngle(int angle);
 };
 
 #endif /* steering_hpp */
