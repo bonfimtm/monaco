@@ -106,11 +106,14 @@ void ServiceClient::loop(void)
       else
       {
         // Read body
-        Serial.print("steering: ");
-        Serial.print((int8_t)client.read());
-        Serial.print(" powertrain: ");
-        Serial.print((int8_t)client.read());
+        this->steeringAngle = (int8_t)client.read();
+        this->powertrainLevel = (int8_t)client.read();
+
         Serial.println();
+        Serial.print("Steering: ");
+        Serial.println(this->steeringAngle);
+        Serial.print("Powertrain: ");
+        Serial.println(this->powertrainLevel);
       }
     }
   }
