@@ -27,10 +27,6 @@ ServiceClient::ServiceClient(
 
 void ServiceClient::setup(void)
 {
-  while (!Serial)
-  {
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
 
   // check for the Wi-Fi module:
   if (WiFi.status() == WL_NO_MODULE)
