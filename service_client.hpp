@@ -20,7 +20,7 @@ class ServiceClient
 private:
   float powertrainLevel;
   float steeringAngle;
-  
+
   const char *ssid;
   const char *pass;
   const char *server;
@@ -30,9 +30,9 @@ private:
   WiFiClient client;           // Wi-Fi client
   int status = WL_IDLE_STATUS; // Wi-Fi connectoin status
 
-  const static unsigned int BODY_SIZE = 8;    // HTTP response body size in bytes
-  const static unsigned int HEADER_LINES = 8; // Number of lines in HTTP header
-  byte responseBody[ServiceClient::BODY_SIZE];
+  constexpr static char *EMPTY_LINE = (char *)"\r\n\r\n";  // HTTP response empty line
+  const static unsigned int BODY_SIZE = 2 * sizeof(float); // HTTP response body size in bytes
+  uint8_t responseBody[ServiceClient::BODY_SIZE];          // Buffer for storing HTTP response body
 
 public:
   ServiceClient(

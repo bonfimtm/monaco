@@ -86,41 +86,28 @@ void ServiceClient::loop(void)
     while (!client.available())
     {
       // Waiting for server response
-      delay(200);
+      delay(100);
     }
 
-    // Read response
-    int remainingHeaderLines = HEADER_LINES;
-    while (client.available())
+    // Find empty line
+    if (client.find(ServiceClient::EMPTY_LINE) && ServiceClient::BODY_SIZE == client.available())
     {
-      if (remainingHeaderLines > 0)
-      {
-        // Skip a header line
-        client.find('\n');
-        remainingHeaderLines--;
-      }
-      else
-      {
-        if (client.available() == ServiceClient::BODY_SIZE)
-        {
-          // Read body
+      // Read response body
+      client.readBytes(responseBody, ServiceClient::BODY_SIZE);
 
-          client.readBytes(responseBody, ServiceClient::BODY_SIZE);
+      memcpy(&this->steeringAngle, this->responseBody, sizeof(float));
+      memcpy(&this->powertrainLevel, this->responseBody + sizeof(float), sizeof(float));
 
-          memcpy(&this->steeringAngle, this->responseBody, sizeof(float));
-          memcpy(&this->powertrainLevel, this->responseBody + sizeof(float), sizeof(float));
-
-          Serial.println();
-          Serial.print("Steering: ");
-          Serial.println(this->steeringAngle);
-          Serial.print("Powertrain: ");
-          Serial.println(this->powertrainLevel);
-        }
-        else
-        {
-          Serial.println(client.available());
-        }
-      }
+      Serial.println();
+      Serial.print("Steering: ");
+      Serial.println(this->steeringAngle);
+      Serial.print("Powertrain: ");
+      Serial.println(this->powertrainLevel);
+    }
+    else
+    {
+      Serial.print("Response body not found! Available bytes: ");
+      Serial.println(client.available());
     }
   }
 
