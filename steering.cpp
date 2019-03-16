@@ -43,7 +43,7 @@ void Steering::loop(void)
     Serial.print(this->angle);
     Serial.print(" deg");
 
-    if (this->angle < Steering::ANGLE_LEFT_MAX || this->angle > Steering::ANGLE_RIGHT_MAX)
+    if (this->angle < Steering::ANGLE_LEFT_MECH_MAX || this->angle > Steering::ANGLE_RIGHT_MECH_MAX)
     {
         return;
     }
