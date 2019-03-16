@@ -25,8 +25,8 @@ private:
   constexpr static float ANGLE_CENTER = 0.0f;
   constexpr static float ANGLE_RIGHT_MAX = 90.0f;
 
-  constexpr static float ANGLE_LEFT_MECH_MAX = -60.0f;
-  constexpr static float ANGLE_RIGHT_MECH_MAX = 60.0f;
+  constexpr static float ANGLE_LEFT_MECH_MAX = -70.0f;
+  constexpr static float ANGLE_RIGHT_MECH_MAX = 70.0f;
 
   const static unsigned int ANGLE_RAW_MIN = 0;
   const static unsigned int ANGLE_RAW_MAX = 255;
