@@ -1,0 +1,10 @@
+<div class="terrain" (click)="drive($event)">
+  <div class="destination-circle" [style.left.px]="destinationRequestX" [style.top.px]="destinationRequestY"></div>
+  <div class="destination-cross" [style.left.px]="destinationRequestX" [style.top.px]="destinationRequestY"></div>
+  <div class="vehicle"></div>
+  <div id="currentDestination">
+    ({{ (currentDisplacement | async)?.x }}, {{ (currentDisplacement | async)?.y }})
+    <br>
+    {{ (currentDisplacement | async)?.feedback | displacementFeedback }}
+  </div>
+</div>

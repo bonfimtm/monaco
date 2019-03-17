@@ -1,0 +1,144 @@
+$lightBlueishGray: #afb5c7;
+$darkBlueishGray: #595d60;
+
+$reddishBrown: #89351d;
+
+$red: #b30006;
+$darkRed: #6a0e15;
+
+$orange: #ff7e14;
+$dark-orange: #b35408;
+
+$yellow: #f7d117;
+$brightYellow: #f3e055;
+
+$darkBlue: #143044;
+$blue: #0057a6;
+$darkAzure: #3399ff;
+$mediumAzure: #42c0fb;
+$mediumBlue: #61afff;
+
+$vehicleWidthCm: 12;
+$vehicleLengthCm: 29;
+
+$ratioPxPerCm: 4px;
+
+$vehicleWidth: $ratioPxPerCm * $vehicleWidthCm;
+$vehicleLength: $ratioPxPerCm * $vehicleLengthCm;
+
+$angleMechLimit: 70deg;
+$rotationAngle: 90deg - $angleMechLimit;
+
+$destinationWidth: 29px;
+$destinationHeight: 29px;
+
+.terrain {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: $darkBlueishGray;
+}
+
+.terrain {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.vehicle {
+  position: fixed;
+  width: $vehicleWidth;
+  height: $vehicleLength;
+  left: 50vw;
+  top: 50vh;
+  transform: translateX(-50%) translateY(-50%);
+  border-style: solid;
+  border-width: 2px;
+  border-color: black;
+  background-color: $orange;
+}
+
+// TODO Show maneuver limitation lines
+.angle-limit {
+  display: none;
+  position: fixed;
+  left: 50vw;
+  top: 50vh;
+  height: 0px;
+  width: 1000px;
+  border-top: 2px dashed $reddishBrown;
+  transform-origin: 0% 0%;
+}
+.angle-limit-fl {
+  transform-origin: 0% 100%;
+  transform: translateX(-($vehicleWidth / 2 + 1px)) translateY(-($vehicleLength / 2 + 3px))
+    rotate(-180deg + $rotationAngle);
+}
+
+.angle-limit-fr {
+  transform: translateX($vehicleWidth / 2 + 1px) translateY(-($vehicleLength / 2 + 2px)) rotate(-$rotationAngle);
+}
+.angle-limit-rl {
+  transform: translateX(-($vehicleWidth / 2 + 1px)) translateY($vehicleLength / 2 + 2px) rotate(180deg - $rotationAngle);
+}
+.angle-limit-rr {
+  transform: translateX($vehicleWidth / 2 + 1px) translateY($vehicleLength / 2 + 1px) rotate($rotationAngle);
+}
+
+.destination-circle {
+  position: fixed;
+  width: $destinationWidth / 3;
+  height: $destinationHeight / 3;
+  border-radius: 50%;
+  border: 2px solid $red;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.destination-cross {
+  position: fixed;
+  width: $destinationWidth;
+  height: $destinationHeight;
+  left: -100px;
+  top: -100px;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.destination-cross:before,
+.destination-cross:after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  background-color: $red;
+}
+
+.destination-cross:before {
+  left: 50%;
+  width: 3px;
+  margin-left: -2px;
+  height: 100%;
+}
+
+.destination-cross:after {
+  top: 50%;
+  height: 3px;
+  margin-top: -2px;
+  width: 100%;
+}
+
+#currentDestination {
+  position: fixed;
+  width: 200px;
+  height: 50px;
+  padding-top: 8px;
+  left: 50vw;
+  bottom: 5vh;
+  transform: translateX(-50%) translateY(-50%);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  color: $darkBlue;
+  text-align: center;
+  border-style: solid;
+  border-width: 2px;
+  border-color: $darkBlue;
+  background-color: $darkAzure;
+}
